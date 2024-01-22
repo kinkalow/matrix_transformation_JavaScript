@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <title>Matrix Transformation</title>
+  </head>
+  <body>
+    <canvas id="canvas" width="640" height="480"></canvas>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/0.160.0/three.min.js"></script>
+    <script>
+      let canvas = document.getElementById("canvas");
+      let renderer = new THREE.WebGLRenderer({ canvas });
+      renderer.setSize(canvas.width, canvas.height);
+
+      let scene = new THREE.Scene();
+      let camera = new THREE.PerspectiveCamera(120, canvas.width / canvas.height, 0.1, 1000);
+      camera.position.z = 100;
+
+      let geometry = new THREE.BoxGeometry(100, 100, 100);
+      let material = new THREE.MeshBasicMaterial({ color: 0x0000ff });
+      let object = new THREE.Mesh(geometry, material);
+      let matrix = new THREE.Matrix4();
+      scene.add(object);
+
+      let m31 = 0.0;
+      let m32 = 0.0;
+      let m33 = 0.0;
+      function animate() {
+        requestAnimationFrame(animate);
+
+        m31 += 0.00005;
+        m32 += 0.0;
+        m33 += 0.0;
+        camera.position.z += 0.0;
+
+        const matrix = new THREE.Matrix4();
+        matrix.set(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, m31, m32, m33, 1);
+        object.matrix = matrix;
+        object.matrixAutoUpdate = false;
+        object.updateMatrixWorld(true);
+
+        renderer.render(scene, camera);
+      }
+
+      animate();
+    </script>
+  </body>
+</html>
